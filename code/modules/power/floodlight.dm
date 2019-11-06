@@ -24,10 +24,10 @@
 			icon_state = "floodlight_c2"
 			state = FLOODLIGHT_NEEDS_SECURING
 	else if(istype(O, /obj/item/light/tube) && (state == FLOODLIGHT_NEEDS_LIGHTS))
-		var/obj/item/light/tube/T = O
-		if(T.rigged)
+		var/obj/item/light/tube/L = O
+		if(L.rigged)
 			to_chat(user, "<span class='notice'>You have a strange feeling that doing this would be a bad idea.</span>") //I don't want to code in what would happen if you put one or more rigged light tubes in a floodlight
-		if(user.transferItemToLoc(T))
+		if(user.transferItemToLoc(L))
 			to_chat(user, "<span class='notice'>You put a light tube in [src].</span>")
 			tubecount++
 			if(tubecount >= 4)
