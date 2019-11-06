@@ -7,6 +7,7 @@
 	icon_state = "floodlight_c1"
 	density = TRUE
 	var/state = FLOODLIGHT_NEEDS_WRENCHING
+	var/tubecount = 0
 
 /obj/structure/floodlight_frame/attackby(obj/item/O, mob/user, params)
 	if(O.tool_behaviour == TOOL_WRENCH && (state == FLOODLIGHT_NEEDS_WRENCHING))
@@ -23,10 +24,25 @@
 			icon_state = "floodlight_c2"
 			state = FLOODLIGHT_NEEDS_SECURING
 	else if(istype(O, /obj/item/light/tube) && (state == FLOODLIGHT_NEEDS_LIGHTS))
-		if(user.transferItemToLoc(O))
-			to_chat(user, "<span class='notice'>You put lights in [src].</span>")
-			new /obj/machinery/power/floodlight(src.loc)
-			qdel(src)
+		var/obj/item/light/tube/T = O
+		if(T.rigged)
+			to_chat(user, "<span class='notice'>You have a strange feeling that doing this would be a bad idea.</span>") //I don't want to code in what would happen if you put one or more rigged light tubes in a floodlight
+		if(user.transferItemToLoc(T))
+			to_chat(user, "<span class='notice'>You put a light tube in [src].</span>")
+			tubecount++
+			if(tubecount >= 4)
+				new /obj/machinery/power/floodlight(src.loc)
+				qdel(src)
+	else if(istype(O, /obj/item/lightreplacer) && (state == FLOODLIGHT_NEEDS_LIGHTS))
+		var/obj/item/lightreplacer/U = O
+		if(U.obj_flags & EMAGGED)
+			to_chat(user, "<span class='notice'>You have a strange feeling that doing this would be a bad idea.</span>") //I don't want to code in what would happen if you put one or more rigged light tubes in a floodlight
+		if(CanUse(U) && Use(U))
+			to_chat(user, "<span class='notice'>You put a light tube in [src].</span>")
+			tubecount++
+			if(tubecount >= 4)
+				new /obj/machinery/power/floodlight(src.loc)
+				qdel(src)
 	else if(O.tool_behaviour == TOOL_SCREWDRIVER && (state == FLOODLIGHT_NEEDS_SECURING))
 		to_chat(user, "<span class='notice'>You fasten the wiring and electronics in [src].</span>")
 		name = "secured [name]"
@@ -104,6 +120,17 @@
 		current--
 	change_setting(current, user)
 	..()
+
+/obj/machinery/power/floodlight/attack_robot(mob/user)
+	if(Adjacent(user))
+		var/current = setting
+		if(current == 1)
+			current = light_setting_list.len
+		else
+			current--
+		change_setting(current, user)
+	else
+		..()
 
 /obj/machinery/power/floodlight/obj_break(damage_flag)
 	. = ..()
