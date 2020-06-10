@@ -4,7 +4,7 @@
 	desc = "A shell of swarmer that was completely powered down. It can no longer activate itself."
 	icon = 'icons/mob/swarmer.dmi'
 	icon_state = "swarmer_unactivated"
-	custom_materials = list(/datum/material/iron=10000, /datum/material/glass=4000)
+	custom_materials = list(/datum/material/iron=10000, /datum/material/glass=4000, /datum/material/bluespace=MINERAL_MATERIAL_AMOUNT) //each swarmer drops a bluespace crystal when destroyed, so an inactive shell should have around as much bluespace material in it as a single bluespace crystal would
 
 /obj/effect/mob_spawn/swarmer
 	name = "unactivated swarmer"
@@ -392,7 +392,7 @@
 	return FALSE
 
 /obj/machinery/field/generator/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
-	to_chat(S, "<span class='warning'>Destroying this object would cause a catastrophic chain reaction. Aborting.</span>")
+	to_chat(S, "<span class='warning'>Destroying this object could cause a catastrophic chain reaction. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/field/containment/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
@@ -405,6 +405,10 @@
 
 /obj/machinery/shieldwall/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
 	to_chat(S, "<span class='warning'>This object does not contain solid matter. Aborting.</span>")
+	return FALSE
+
+/obj/machinery/ore_silo/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	to_chat(S, "<span class='warning'>Concentrated matter repositories such as this one would be best processed by more specialized units that shall arrive later. Aborting.</span>") //idk it was the best explanation I could come up with
 	return FALSE
 
 ////END CTRL CLICK FOR SWARMERS////
