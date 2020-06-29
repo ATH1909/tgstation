@@ -210,7 +210,8 @@
 	icon_state = "curadrobe"
 	product_ads = "Glasses for your eyes and literature for your soul, Curadrobe has it all!; Impress & enthrall your library guests with Curadrobe's extended line of pens!"
 	vend_reply = "Thank you for using the CuraDrobe!"
-	products = list(/obj/item/pen = 4,
+	products = list(/obj/item/choice_beacon/hero = 1,
+					/obj/item/pen = 4,
 					/obj/item/pen/red = 2,
 					/obj/item/pen/blue = 2,
 					/obj/item/pen/fourcolor = 1,
