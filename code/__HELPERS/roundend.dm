@@ -410,8 +410,9 @@
 	GLOB.common_report = build_roundend_report()
 	GLOB.survivor_report = survivor_report(popcount)
 	for(var/client/C in GLOB.clients)
-		show_roundend_report(C, FALSE)
-		give_show_report_button(C)
+		if(CONFIG_GET(flag/round_end_report_self_display)) //if this config option is set, the round end report will pop up on its own at the end of the round
+			show_roundend_report(C, FALSE)
+		give_show_report_button(C) //regardless of the setting of that config option, the players will be given an action button that will display the round end report when pressed (and they can use the "Your Last Round" button in the OOC menu to display the round end report as well)
 		CHECK_TICK
 
 /datum/controller/subsystem/ticker/proc/law_report()

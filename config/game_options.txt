@@ -572,3 +572,6 @@ RATCAP 64
 
 ## Maximum fine for a citation
 MAXFINE 2000
+
+## Uncomment to make the round end report automatically display itself when a round ends.
+#ROUND_END_REPORT_SELF_DISPLAY
