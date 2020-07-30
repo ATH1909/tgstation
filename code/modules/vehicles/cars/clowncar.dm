@@ -10,10 +10,12 @@
 	car_traits = CAN_KIDNAP
 	key_type = /obj/item/bikehorn
 	key_type_exact = FALSE
+	escape_time = 100 //So that the clown driver can shitpost over comms without people successfully escaping his car if he types for longer than 6 seconds.
+	zero_g_compatible = TRUE //So that the AI can't just shut down the gravity generator to ruin the fun of a clown who spent all of his TC on this car.
 	var/droppingoil = FALSE
 	var/RTDcooldown = 150
 	var/lastRTDtime = 0
-	var/thankscount
+	var/thankscount = 0
 	var/cannonmode = FALSE
 	var/cannonbusy = FALSE
 
@@ -24,10 +26,9 @@
 
 /obj/vehicle/sealed/car/clowncar/auto_assign_occupant_flags(mob/M)
 	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		if(H.mind && H.mind.assigned_role == "Clown") //Ensures only clowns can drive the car. (Including more at once)
-			add_control_flags(H, VEHICLE_CONTROL_DRIVE|VEHICLE_CONTROL_PERMISSION)
-			RegisterSignal(H, COMSIG_MOB_CLICKON, .proc/FireCannon)
+		if(HAS_TRAIT(M, TRAIT_CLUMSY)) //Ensures only clowns (and/or clumsy people) can drive the car (including more than one clown at once).
+			add_control_flags(M, VEHICLE_CONTROL_DRIVE|VEHICLE_CONTROL_PERMISSION)
+			RegisterSignal(M, COMSIG_MOB_CLICKON, .proc/FireCannon)
 			M.log_message("has entered [src] as a possible driver", LOG_ATTACK)
 			return
 	add_control_flags(M, VEHICLE_CONTROL_KIDNAPPED)
@@ -84,6 +85,10 @@
 		playsound(src, 'sound/vehicles/clowncar_crashpins.ogg', 75)
 		DumpMobs(TRUE)
 		log_combat(src, A, "crashed into", null, "dumping all passengers")
+	else if(istype(A, /obj/machinery/door/firedoor))
+		/obj/machinery/door/firedoor/F = A
+		if(!(F.welded) && !(F.operating) && F.density) //the conditions required to crowbar open a firelock
+			F.open() //so that you can't stop a clown car by just hitting a fire alarm
 
 /obj/vehicle/sealed/car/clowncar/emag_act(mob/user)
 	if(obj_flags & EMAGGED)

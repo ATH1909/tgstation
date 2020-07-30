@@ -7,12 +7,16 @@
 	var/last_enginesound_time
 	var/engine_sound_length = 20 //Set this to the length of the engine sound
 	var/escape_time = 60 //Time it takes to break out of the car
+	///Can we still move in weightless/gravityless environments? Note that this is only checked during Initialize(), so varediting this variable after the car has already been spawned won't do anything.
+	var/zero_g_compatible = FALSE
 
 /obj/vehicle/sealed/car/Initialize()
 	. = ..()
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
 	D.vehicle_move_delay = movedelay
 	D.slowvalue = 0
+	if(zero_g_compatible)
+		D.override_allow_spacemove = TRUE
 
 /obj/vehicle/sealed/car/generate_actions()
 	. = ..()
