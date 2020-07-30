@@ -5,7 +5,7 @@
 	max_integrity = 150
 	armor = list("melee" = 70, "bullet" = 40, "laser" = 40, "energy" = 0, "bomb" = 30, "bio" = 0, "rad" = 0, "fire" = 80, "acid" = 80)
 	enter_delay = 20
-	max_occupants = 50
+	max_occupants = 100
 	movedelay = 0.6
 	car_traits = CAN_KIDNAP
 	key_type = /obj/item/bikehorn
