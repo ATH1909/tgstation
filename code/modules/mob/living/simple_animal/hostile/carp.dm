@@ -216,7 +216,7 @@
 	name = "Cayenne"
 	real_name = "Cayenne"
 	gender = FEMALE
-	desc = "A failed Syndicate experiment in weaponized space carp technology, [p_they()] now serves as a lovable mascot."
+	desc = "A failed Syndicate experiment in weaponized space carp technology, [p_they()] now serve[p_s()] as a lovable mascot."
 	speak_emote = list("squeaks")
 	gold_core_spawnable = NO_SPAWN
 	faction = list(ROLE_SYNDICATE)
