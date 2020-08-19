@@ -22,8 +22,8 @@
 	maxHealth = 25
 	health = 25
 	food_type = list(/obj/item/reagent_containers/food/snacks/meat)
-	tame_chance = 10
-	bonus_tame_chance = 5
+	tame_chance = 20
+	bonus_tame_chance = 10
 	search_objects = 1
 	wanted_objects = list(/obj/item/storage/cans)
 
@@ -159,9 +159,6 @@
 	gold_core_spawnable = NO_SPAWN
 	del_on_death = 1
 	random_color = FALSE
-	food_type = list()
-	tame_chance = 0
-	bonus_tame_chance = 0
 
 /mob/living/simple_animal/hostile/carp/megacarp
 	icon = 'icons/mob/broadMobs.dmi'
@@ -177,9 +174,6 @@
 	pixel_x = -16
 	mob_size = MOB_SIZE_LARGE
 	random_color = FALSE
-	food_type = list()
-	tame_chance = 0
-	bonus_tame_chance = 0
 
 	obj_damage = 80
 	melee_damage_lower = 20
@@ -206,19 +200,17 @@
 	if(regen_cooldown < world.time)
 		heal_overall_damage(4)
 	if(!rideable && src.mind)
-		can_buckle = TRUE
-		buckle_lying = FALSE
-		var/datum/component/riding/D = LoadComponent(/datum/component/riding)
-		D.set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(1, 8), TEXT_SOUTH = list(1, 8), TEXT_EAST = list(-3, 6), TEXT_WEST = list(3, 6)))
-		D.set_vehicle_dir_offsets(SOUTH, pixel_x, 0)
-		D.set_vehicle_dir_offsets(NORTH, pixel_x, 0)
-		D.set_vehicle_dir_offsets(EAST, pixel_x, 0)
-		D.set_vehicle_dir_offsets(WEST, pixel_x, 0)
-		D.set_vehicle_dir_layer(SOUTH, ABOVE_MOB_LAYER)
-		D.set_vehicle_dir_layer(NORTH, OBJ_LAYER)
-		D.set_vehicle_dir_layer(EAST, OBJ_LAYER)
-		D.set_vehicle_dir_layer(WEST, OBJ_LAYER)
-		rideable = TRUE
+		tamed()
+
+/mob/living/simple_animal/hostile/carp/megacarp/tamed()
+	. = ..() //inherits most of the riding stuff from normal carp taming
+	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
+	D.set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(1, 8), TEXT_SOUTH = list(1, 8), TEXT_EAST = list(-3, 6), TEXT_WEST = list(3, 6)))
+	D.set_vehicle_dir_offsets(SOUTH, pixel_x, 0)
+	D.set_vehicle_dir_offsets(NORTH, pixel_x, 0)
+	D.set_vehicle_dir_offsets(EAST, pixel_x, 0)
+	D.set_vehicle_dir_offsets(WEST, pixel_x, 0)
+	rideable = TRUE
 
 /mob/living/simple_animal/hostile/carp/cayenne
 	name = "Cayenne"
@@ -230,22 +222,26 @@
 	faction = list(ROLE_SYNDICATE)
 	rarechance = 10
 	food_type = list()
-	tame_chance = 0
+	tame_chance = 0 //already loyal to the Syndicate
 	bonus_tame_chance = 0
 	pet_bonus = TRUE
 	pet_bonus_emote = "bloops happily!"
+
+/mob/living/simple_animal/hostile/carp/cayenne/Initialize(mapload)
+	. = ..()
+	tamed() //she's already been tamed, so you can just ride her from roundstart
 
 /mob/living/simple_animal/hostile/carp/cayenne/lia
 	name = "Lia"
 	real_name = "Lia"
 	desc = "A failed experiment of Nanotrasen to create weaponised carp technology. This less than intimidating carp now serves as the Head of Security's pet."
-	faction = list("neutral")
-	health = 200
+	faction = list("neutral") //already loyal to NT
 	icon_dead = "magicarp_dead"
 	icon_gib = "magicarp_gib"
 	icon_living = "magicarp"
 	icon_state = "magicarp"
 	maxHealth = 200
+	health = 200
 	random_color = FALSE
 
 #undef REGENERATION_DELAY

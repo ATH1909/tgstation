@@ -6,7 +6,7 @@
 	earliest_start = 0 MINUTES
 
 /datum/round_event/wizard/magicarp
-	announceWhen	= 3
+	announceWhen = 3
 	startWhen = 50
 
 /datum/round_event/wizard/magicarp/setup()
@@ -31,16 +31,15 @@
 	icon_gib = "magicarp_gib"
 	ranged = 1
 	retreat_distance = 2
-	minimum_distance = 0 //Between shots they can and will close in to nash
+	minimum_distance = 0 //Between shots they can and will close in to gnash
 	projectiletype = /obj/projectile/magic
 	projectilesound = 'sound/weapons/emitter.ogg'
 	maxHealth = 50
 	health = 50
 	gold_core_spawnable = NO_SPAWN
 	random_color = FALSE
-	food_type = list()
-	tame_chance = 0
-	bonus_tame_chance = 0
+	tame_chance = 10 //much harder to tame than a normal carp; they're to normal carp what unicorns are to horses
+	bonus_tame_chance = 5
 	var/allowed_projectile_types = list(/obj/projectile/magic/change, /obj/projectile/magic/animate, /obj/projectile/magic/resurrection,
 	/obj/projectile/magic/death, /obj/projectile/magic/teleport, /obj/projectile/magic/door, /obj/projectile/magic/aoe/fireball,
 	/obj/projectile/magic/spellblade, /obj/projectile/magic/arcane_barrage)
