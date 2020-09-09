@@ -15,12 +15,16 @@
 		else if(stat == CONSCIOUS)
 			use_power()
 
+///This proc is used for both the feedback given to a cyborg when they change their lamp's setting and as a part of the calculation for the power use of said lamp in use_power(). Remember that lamp_intensity is equal to the setting of the lamp TIMES TWO, not just the setting of the lamp.
+/mob/living/silicon/robot/proc/lamp_power_use_rate_calculation()
+	return max((lamp_intensity - 2) * 2,1) //Lamp power usage table: off or setting 1 = 1/tick, setting 2 = 4/tick, setting 3 = 8/tick, setting 4 = 12/tick, setting 5 = 16/tick
+
 /mob/living/silicon/robot/proc/use_power()
 	if(cell && cell.charge)
 		if(cell.charge <= 100)
 			uneq_all()
-		var/amt = clamp((lamp_intensity - 2) * 2,1,cell.charge) //Always try to use at least one charge per tick, but allow it to completely drain the cell.
-		cell.use(amt) //Usage table: 1/tick if off/lowest setting, 4 = 4/tick, 6 = 8/tick, 8 = 12/tick, 10 = 16/tick
+		var/amt = min(lamp_power_use_rate_calculation(),cell.charge) //don't try to drain more power than the cell has available
+		cell.use(amt) 
 	else
 		uneq_all()
 		low_power_mode = TRUE

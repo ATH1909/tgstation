@@ -81,7 +81,7 @@
 	var/tonermax = 40
 
 	var/lamp_max = 10 //Maximum brightness of a borg lamp. Set as a var for easy adjusting.
-	var/lamp_intensity = 0 //Luminosity of the headlamp. 0 is off. Higher settings than the minimum require power.
+	var/lamp_intensity = 0 //Luminosity of the headlamp. 0 is off. Higher settings (other than setting 1, which costs the same amount of power per tick as setting 0) require more power.
 	var/lamp_cooldown = 0 //Flag for if the lamp is on cooldown after being forcibly disabled.
 
 	var/sight_mode = 0
@@ -541,11 +541,9 @@
 		to_chat(src, "<span class='danger'>This function is currently offline.</span>")
 		return
 
-	if(lamp_intensity == 0) //We'll skip intensity of 2, since every mob already has such a see-darkness range, so no much need for it.
-		lamp_intensity = 4
-	else //Some sort of magical "modulo" thing which somehow increments lamp power by 2, until it hits the max and resets to 0.
-		lamp_intensity = (lamp_intensity + 2) % (lamp_max + 2)
-	to_chat(src, "<span class='notice'>[lamp_intensity > 2 ? "Headlamp power set to Level [lamp_intensity * 0.5]" : "Headlamp disabled"].</span>")
+	//Some sort of magical "modulo" thing which somehow increments lamp power by 2, until it hits the max and resets to 0.
+	lamp_intensity = (lamp_intensity + 2) % (lamp_max + 2)
+	to_chat(src, "<span class='notice'>[lamp_intensity ? "Headlamp power set to level [lamp_intensity*0.5]. Headlamp power consumption rate is now [DisplayEnergy(lamp_power_use_rate_calculation())]/tick" : "Headlamp disabled"].</span>") //lamp_power_use_rate_calculation() can be found in the robot version of life.dm 
 	update_headlamp()
 
 
