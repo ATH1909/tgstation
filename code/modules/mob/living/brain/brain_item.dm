@@ -182,42 +182,52 @@
 	else
 		. += "<span class='info'>This one is completely devoid of life.</span>"
 
+/obj/item/reagent_containers/food/snacks/brain
+	name = "temporary zombie brain snack item"
+	desc = "If you're reading this it means I messed up. This is related to zombies eating brains and is basically a copy+paste of the code for moths eating clothes."
+	list_reagents = list(/datum/reagent/consumable/nutriment/protein/brain = 1)
+	tastes = list("intelligence" = 1, "wrinkles" = 1)
+	foodtype = MEAT | RAW | GROSS
+
 /obj/item/organ/brain/attack(mob/living/carbon/C, mob/user)
 	if(!istype(C))
 		return ..()
 
 	add_fingerprint(user)
 
-	if(user.zone_selected != BODY_ZONE_HEAD)
-		return ..()
-
 	var/target_has_brain = C.getorgan(/obj/item/organ/brain)
 
-	if(!target_has_brain && C.is_eyes_covered())
+	if(target_has_brain || (user.zone_selected != BODY_ZONE_HEAD)) //if you somehow end up as a brainless zombie, you can still eat brains without trying to cram them into your head by just not targeting your head
+		if(user.a_intent != INTENT_HARM && iszombie(C))
+			var/obj/item/reagent_containers/food/snacks/brain/brain_as_food = new
+			brain_as_food.name = name
+			if(brain_as_food.attack(C, user, def_zone))
+				take_damage(15, sound_effect=FALSE)
+			qdel(brain_as_food)
+		else
+			return ..()
+
+	if(C.is_eyes_covered())
 		to_chat(user, "<span class='warning'>You're going to need to remove [C.p_their()] head cover first!</span>")
 		return
 
-	//since these people will be dead M != usr
+	if(!C.get_bodypart(BODY_ZONE_HEAD) || !user.temporarilyRemoveItemFromInventory(src))
+		return
 
-	if(!target_has_brain)
-		if(!C.get_bodypart(BODY_ZONE_HEAD) || !user.temporarilyRemoveItemFromInventory(src))
-			return
-		var/msg = "[C] has [src] inserted into [C.p_their()] head by [user]."
-		if(C == user)
-			msg = "[user] inserts [src] into [user.p_their()] head!"
+	var/msg = "[C] has [src] inserted into [C.p_their()] head by [user]."
+	if(C == user)
+		msg = "[user] inserts [src] into [user.p_their()] head!"
 
-		C.visible_message("<span class='danger'>[msg]</span>",
-						"<span class='userdanger'>[msg]</span>")
+	C.visible_message("<span class='danger'>[msg]</span>",
+					"<span class='userdanger'>[msg]</span>")
 
-		if(C != user)
-			to_chat(C, "<span class='notice'>[user] inserts [src] into your head.</span>")
-			to_chat(user, "<span class='notice'>You insert [src] into [C]'s head.</span>")
-		else
-			to_chat(user, "<span class='notice'>You insert [src] into your head.</span>"	)
-
-		Insert(C)
+	if(C != user)
+		to_chat(C, "<span class='notice'>[user] inserts [src] into your head.</span>")
+		to_chat(user, "<span class='notice'>You insert [src] into [C]'s head.</span>")
 	else
-		..()
+		to_chat(user, "<span class='notice'>You insert [src] into your head.</span>"	)
+
+	Insert(C)
 
 /obj/item/organ/brain/Destroy() //copypasted from MMIs.
 	if(brainmob)

@@ -117,6 +117,11 @@
 	brute_heal = 0.8 //Rewards the player for eating a balanced diet.
 	nutriment_factor = 9 * REAGENTS_METABOLISM //45% as calorie dense as corn oil.
 
+/datum/reagent/consumable/nutriment/protein/brain //note to self: add a "brain freeze" reagent in the future that can be made by cooling this reagent down enough
+	name = "Brain Mush"
+	description = "A mush of brain cells that is oddly nutritious. One of the few things that zombies can metabolize."
+	self_consuming = TRUE //so that zombies can metabolize it
+
 /datum/reagent/consumable/cooking_oil
 	name = "Cooking Oil"
 	description = "A variety of cooking oil derived from fat or plants. Used in food preparation and frying."
