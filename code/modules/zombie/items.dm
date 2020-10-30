@@ -13,7 +13,7 @@
 	hitsound = 'sound/hallucinations/growl1.ogg'
 	force = 21 // Just enough to break airlocks with melee attacks
 	sharpness = SHARP_EDGED
-	wound_bonus = -30
+	wound_bonus = -10 //this needs to be high enough to allow zombies to behead the corpses of their victims (without needing to whack at their corpse for like 2 minutes straight) so that they can eat their brains
 	bare_wound_bonus = 15
 	damtype = BRUTE
 
@@ -39,6 +39,8 @@
 			try_to_zombie_infect(target)
 		else
 			check_feast(target, user)
+	else if(istype(target, /obj/item/organ/brain) || istype (target, /obj/item/food/burger/brain))
+		check_feast_brain(target, user)
 
 /proc/try_to_zombie_infect(mob/living/carbon/human/target)
 	CHECK_DNA_AND_SPECIES(target)
@@ -77,3 +79,14 @@
 		user.updatehealth()
 		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, -hp_gained) // Zom Bee gibbers "BRAAAAISNSs!1!"
 		user.set_nutrition(min(user.nutrition + hp_gained, NUTRITION_LEVEL_FULL))
+
+/obj/item/zombie_hand/proc/check_feast(mob/living/target, mob/living/user)
+	qdel(target) //om nom nom
+	// zero as argument for no instant health update
+	user.adjustBruteLoss(-100, 0) //humans and monkeys (the two most common sources of brains) technically both have 200 health, but they're basically done for once they go into crit (and brains are more convenient to drag around than corpses), so we'll use 100 as the effective hp_gained value here
+	user.adjustToxLoss(-100, 0)
+	user.adjustFireLoss(-100, 0)
+	user.adjustCloneLoss(-100, 0)
+	user.updatehealth()
+	user.adjustOrganLoss(ORGAN_SLOT_BRAIN, -100) //you are what you eat
+	user.set_nutrition(min(user.nutrition + 200, NUTRITION_LEVEL_FULL)) //double the amount of nutrition that it "should" give because brains are, like, THE zombie food
