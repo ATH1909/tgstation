@@ -17,7 +17,7 @@
 
 	var/points = 0
 	var/ore_multiplier = 1
-	var/point_upgrade = 1
+	var/point_upgrade = 1.5
 	var/list/ore_values = list(/datum/material/iron = 1, /datum/material/glass = 1,  /datum/material/plasma = 15,  /datum/material/silver = 16, /datum/material/gold = 18, /datum/material/titanium = 30, /datum/material/uranium = 30, /datum/material/diamond = 50, /datum/material/bluespace = 50, /datum/material/bananium = 60)
 	/// Variable that holds a timer which is used for callbacks to `send_console_message()`. Used for preventing multiple calls to this proc while the ORM is eating a stack of ores.
 	var/console_notify_timer
@@ -34,12 +34,6 @@
 	QDEL_NULL(stored_research)
 	materials = null
 	return ..()
-
-/obj/machinery/mineral/ore_redemption/RefreshParts()
-	var/point_upgrade_temp = 1
-	for(var/obj/item/stock_parts/micro_laser/L in component_parts)
-		point_upgrade_temp = 0.65 + (0.35 * L.rating)
-	point_upgrade = point_upgrade_temp
 
 /obj/machinery/mineral/ore_redemption/examine(mob/user)
 	. = ..()
