@@ -35,6 +35,12 @@
 	materials = null
 	return ..()
 
+/obj/machinery/mineral/ore_redemption/RefreshParts()
+	var/point_upgrade_temp = 1
+	for(var/obj/item/stock_parts/micro_laser/L in component_parts)
+		point_upgrade_temp = 0.65 + (0.35 * L.rating)
+	point_upgrade = point_upgrade_temp
+
 /obj/machinery/mineral/ore_redemption/examine(mob/user)
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
