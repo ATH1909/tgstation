@@ -161,12 +161,7 @@
 				if(converter)
 					// Did we try to flash them from behind?
 					if(deviation == DEVIATION_FULL)
-						// If we did and we're on help intent, fail with a feedback message and return.
-						if(converter.owner.current.a_intent == INTENT_HELP)
-							to_chat(user, "<span class='notice'>You try to use the tacticool tier, lean over the shoulder technique to blind [M] from behind but your poor combat stance causes you to stumble!</span>")
-							visible_message("<span class='warning'>[user] fails to blind [M] with the flash!</span>","<span class='danger'>[user] fails to blind you with the flash!</span>")
-							return
-						// Otherwise, tacticool leaning technique engaged for sideways-stun power.
+						// Headrevs can use a tacticool leaning technique so that they don't have to worry about facing for their conversions.
 						to_chat(user, "<span class='notice'>You use the tacticool tier, lean over the shoulder technique to blind [M] with a flash!</span>")
 						deviation = DEVIATION_PARTIAL
 					// Convert them. Terribly.
