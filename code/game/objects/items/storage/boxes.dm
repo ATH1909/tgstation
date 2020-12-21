@@ -6,7 +6,7 @@
  *		Empty box, starter boxes (survival/engineer),
  *		Latex glove and sterile mask boxes,
  *		Syringe, beaker, dna injector boxes,
- *		Blanks, flashbangs, and EMP grenade boxes,
+ *		Blanks, flashbangs, and EMP grenade boxes,e
  *		Tracking and chemical implant boxes,
  *		Prescription glasses and drinking glass boxes,
  *		Condiment bottle and silly cup boxes,
