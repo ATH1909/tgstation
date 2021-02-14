@@ -66,40 +66,43 @@
 			A.setDir(user.dir)
 			A.buckle_mob(user)
 
-/obj/effect/proc_holder/spell/aoe_turf/conjure/mime_box
+/obj/effect/proc_holder/spell/targeted/conjure_item/mime_box
 	name = "Invisible Box"
-	desc = "The mime's performance transmutates a box into physical reality."
+	desc = "The mime's performance creates an invisible box or dispels an existing invisible box if one has already been conjured."
 	school = "mime"
 	panel = "Mime"
-	summon_type = list(/obj/item/storage/box/mime)
+	item_type = /obj/item/storage/box/mime
 	invocation_type = INVOCATION_EMOTE
 	invocation_emote_self = "<span class='notice'>You conjure up an invisible box, large enough to store a few things.</span>"
-	summon_lifespan = 500
-	charge_max = 300
-	clothes_req = FALSE
+	charge_max = 150
 	antimagic_allowed = TRUE
-	range = 0
 	cast_sound = null
 	human_req = TRUE
-
 	action_icon = 'icons/mob/actions/actions_mime.dmi'
 	action_icon_state = "invisible_box"
 	action_background_icon_state = "bg_mime"
 
-/obj/effect/proc_holder/spell/aoe_turf/conjure/mime_box/cast(list/targets,mob/user = usr)
-	..()
-	var/turf/T = user.loc
-	for (var/obj/item/storage/box/mime/B in T)
-		user.put_in_hands(B)
-		B.alpha = 255
-		addtimer(CALLBACK(B, /obj/item/storage/box/mime/.proc/emptyStorage, FALSE), (summon_lifespan - 1))
+/obj/effect/proc_holder/spell/targeted/conjure_item/mime_box/make_item()
+	. = ..()
+	item.alpha = 255
 
-/obj/effect/proc_holder/spell/aoe_turf/conjure/mime_box/Click()
+/obj/effect/proc_holder/spell/targeted/conjure_item/mime_box/delete_item()
+	if(istype(item, /obj/item/storage/box/mime))
+		var/obj/item/storage/box/mime/mimebox = item
+		mimebox.emptyStorage()
+	return ..()
+
+/obj/effect/proc_holder/spell/targeted/conjure_item/mime_box/Click()
 	if(usr?.mind)
 		if(!usr.mind.miming)
 			to_chat(usr, "<span class='warning'>You must dedicate yourself to silence first!</span>")
 			return
-		invocation = "<B>[usr.real_name]</B> moves [usr.p_their()] hands in the shape of a cube, pressing a box out of the air."
+		if(delete_old && item && !QDELETED(item))
+			invocation_emote_self = "<span class='notice'>You dispel your invisible box.</span>"
+			invocation = "<B>[usr.real_name]</B> flicks [usr.p_their()] hands apart, doing... something."
+		else
+			invocation_emote_self = initial(invocation_emote_self)
+			invocation = "<B>[usr.real_name]</B> moves [usr.p_their()] hands in the shape of a cube, pressing a box out of the air." //why is mime spell code so cursed
 	else
 		invocation_type ="none"
 	..()

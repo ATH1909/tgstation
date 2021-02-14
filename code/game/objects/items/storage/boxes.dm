@@ -85,16 +85,6 @@
 	inhand_icon_state = null
 	alpha = 0
 
-/obj/item/storage/box/mime/attack_hand(mob/user)
-	..()
-	if(user.mind.miming)
-		alpha = 255
-
-/obj/item/storage/box/mime/Moved(oldLoc, dir)
-	if (iscarbon(oldLoc))
-		alpha = 0
-	..()
-
 //Disk boxes
 
 /obj/item/storage/box/disks

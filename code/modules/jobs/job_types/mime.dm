@@ -72,7 +72,7 @@
 		if("Invisible Chair")
 			user.mind.AddSpell(new /obj/effect/proc_holder/spell/aoe_turf/conjure/mime_chair(null))
 		if("Invisible Box")
-			user.mind.AddSpell(new /obj/effect/proc_holder/spell/aoe_turf/conjure/mime_box(null))
+			user.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/mime_box(null))
 		else
 			return
 	to_chat(user, "<span class='warning'>The book disappears into thin air.</span>")
