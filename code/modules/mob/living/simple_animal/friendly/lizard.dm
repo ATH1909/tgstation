@@ -8,6 +8,7 @@
 	health = 5
 	maxHealth = 5
 	faction = list("Lizard")
+	butcher_results = list(/obj/item/food/meat/slab = 1, /obj/item/organ/tail/lizard = 1)
 	attack_verb_continuous = "bites"
 	attack_verb_simple = "bite"
 	melee_damage_lower = 1
