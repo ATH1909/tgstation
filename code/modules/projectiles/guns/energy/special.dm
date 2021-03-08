@@ -238,9 +238,16 @@
 			if(istype(WH))
 				WH.gun = src
 
-/obj/item/gun/energy/wormhole_projector/process_chamber()
+/obj/item/gun/energy/wormhole_projector/afterattack(atom/target, mob/living/user, flag, params)
+	if(LAZYACCESS(modifiers, RIGHT_CLICK) && select != 2) //right click to fire an orange portal
+		select_fire()
+	else if(select != 1) //left click to fire a blue portal
+		select_fire()
 	..()
-	select_fire()
+
+/obj/item/gun/energy/wormhole_projector/attack_self(mob/living/user as mob)
+	return
+
 
 /obj/item/gun/energy/wormhole_projector/proc/on_portal_destroy(obj/effect/portal/P)
 	if(P == p_blue)
