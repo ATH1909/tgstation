@@ -6,6 +6,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
 	var/flashbang_range = 7
+	det_time = 0
 
 /obj/item/grenade/hypnotic/detonate(mob/living/lanced_by)
 	. = ..()
