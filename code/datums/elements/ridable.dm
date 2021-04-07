@@ -183,7 +183,7 @@
 	if(rider == user)
 		return //Piggyback user.
 	user.unbuckle_mob(rider)
-	if(HAS_TRAIT(user, TRAIT_PACIFISM))
+	if(HAS_TRAIT(user, TRAIT_PACIFISM) || !HAS_TRAIT(rider, TRAIT_DWARF))
 		to_chat(user, "<span class='notice'>You gently let go of [rider].</span>")
 		return
 	return rider

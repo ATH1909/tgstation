@@ -82,7 +82,7 @@
 //Dwarfism shrinks your body and lets you pass tables.
 /datum/mutation/human/dwarfism
 	name = "Dwarfism"
-	desc = "A mutation believed to be the cause of dwarfism."
+	desc = "A mutation believed to be the cause of dwarfism. Rumored to improve aerodynamics."
 	quality = POSITIVE
 	difficulty = 16
 	instability = 5
