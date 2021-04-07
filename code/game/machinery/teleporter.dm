@@ -78,13 +78,17 @@
 			if(!calibrated && prob(30 - ((accuracy) * 10))) //oh dear a problem
 				if(ishuman(M))//don't remove people from the round randomly you jerks
 					var/mob/living/carbon/human/human = M
-					if(!(human.mob_biotypes & (MOB_ROBOTIC|MOB_MINERAL|MOB_UNDEAD|MOB_SPIRIT)))
-						if(human.dna && human.dna.species.id != "fly")
-							to_chat(M, "<span class='hear'>You hear a buzzing in your ears.</span>")
-							human.set_species(/datum/species/fly)
-							log_game("[human] ([key_name(human)]) was turned into a fly person")
-
+					if(!(human.mob_biotypes & (MOB_ROBOTIC|MOB_MINERAL|MOB_UNDEAD|MOB_SPIRIT)) && human.dna && human.dna.species.id != "fly")
+						to_chat(M, "<span class='hear'>You hear a buzzing in your ears.</span>")
+						human.set_species(/datum/species/fly)
+						log_game("[human] ([key_name(human)]) was turned into a flyperson")
 					human.apply_effect((rand(120 - accuracy * 40, 180 - accuracy * 60)), EFFECT_IRRADIATE, 0)
+				else if(isobj(M))
+					var/obj/teleported_object = M
+					var/datum/component/edible/stats_of_teleported_food = teleported_object.GetComponent(/datum/component/edible)
+					if(stats_of_teleported_food && stats_of_teleported_food.foodtypes & GRAIN)
+						teleported_object.animate_atom_living() //no burst of rads here, because someone would somehow find a way to abuse that
+			
 			calibrated = FALSE
 	return
 
