@@ -7,7 +7,6 @@
 #ifdef DEBUG
 #define USE_CUSTOM_ERROR_HANDLER
 #endif
-
 #ifdef TESTING
 #define DATUMVAR_DEBUGGING_MODE
 
