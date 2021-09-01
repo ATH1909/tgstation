@@ -3,7 +3,7 @@
 /obj/item/autosurgeon
 	name = "autosurgeon"
 	desc = "A device that automatically inserts an implant, skillchip or organ into the user without the hassle of extensive surgery. \
-		It has a screwdriver slot for removing accidentally added items."
+		It has a crowbar slot for removing accidentally added items."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "autoimplanter"
 	inhand_icon_state = "nothing"
@@ -17,7 +17,7 @@
 /obj/item/autosurgeon/organ
 	name = "implant autosurgeon"
 	desc = "A device that automatically inserts an implant or organ into the user without the hassle of extensive surgery. \
-		It has a slot to insert implants or organs and a screwdriver slot for removing accidentally added items."
+		It has a slot to insert implants or organs and a crowbar slot for removing accidentally added items."
 
 	var/organ_type = /obj/item/organ
 	var/starting_organ
@@ -73,6 +73,15 @@
 	if(..())
 		return TRUE
 	if(!storedorgan)
+		to_chat(user, span_warning("There's no implant in [src] for you to tweak!"))
+	else
+		storedorgan.screwdriver_act(user, screwtool)
+	return TRUE
+
+/obj/item/autosurgeon/organ/crowbar_act(mob/living/user, obj/item/screwtool)
+	if(..())
+		return TRUE
+	if(!storedorgan)
 		to_chat(user, span_warning("There's no implant in [src] for you to remove!"))
 	else
 		var/atom/drop_loc = user.drop_location()
@@ -89,12 +98,12 @@
 	return TRUE
 
 /obj/item/autosurgeon/organ/cmo
-	desc = "A single use autosurgeon that contains a medical heads-up display augment. A screwdriver can be used to remove it, but implants can't be placed back in."
+	desc = "A single use autosurgeon that contains a medical heads-up display augment. A crowbar can be used to remove it, but implants can't be placed back in."
 	uses = 1
 	starting_organ = /obj/item/organ/cyberimp/eyes/hud/medical
 
 /obj/item/autosurgeon/organ/syndicate/laser_arm
-	desc = "A single use autosurgeon that contains a combat arms-up laser augment. A screwdriver can be used to remove it, but implants can't be placed back in."
+	desc = "A single use autosurgeon that contains a combat arms-up laser augment. A screwdriver can be used to change which arm the laser augment will be installed in. A crowbar can be used to remove it, but doing so will render the autosurgeon useless."
 	uses = 1
 	starting_organ = /obj/item/organ/cyberimp/arm/gun/laser
 
