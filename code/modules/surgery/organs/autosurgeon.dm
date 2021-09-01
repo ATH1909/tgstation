@@ -66,17 +66,10 @@
 			return
 		storedorgan = weapon
 		to_chat(user, span_notice("You insert the [weapon] into [src]."))
-	else
+	else if(!storedorgan || weapon.tool_behaviour == TOOL_CROWBAR)
 		return ..()
-
-/obj/item/autosurgeon/organ/screwdriver_act(mob/living/user, obj/item/screwtool)
-	if(..())
-		return TRUE
-	if(!storedorgan)
-		to_chat(user, span_warning("There's no implant in [src] for you to tweak!"))
 	else
-		storedorgan.screwdriver_act(user, screwtool)
-	return TRUE
+		return storedorgan.attackby(weapon, user, params)
 
 /obj/item/autosurgeon/organ/crowbar_act(mob/living/user, obj/item/screwtool)
 	if(..())
